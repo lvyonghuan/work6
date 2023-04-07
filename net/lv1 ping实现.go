@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"math/rand"
 	"net"
 	"time"
 )
@@ -43,12 +44,14 @@ func main() {
 			ip = ipAddrs[0]
 		}
 	}
+	rand.Seed(time.Now().UnixNano()) // 以当前时间作为随机数种子
+	icmpID := uint16(rand.Intn(65535))
 	icmp := ICMP{}
 	//icmp头部填充
 	icmp.Type = 8
 	icmp.Code = 0
 	icmp.Checksum = 0
-	icmp.Identifier = 1
+	icmp.Identifier = icmpID
 	icmp.SequenceNum = 1
 	//建立与目标主机的连接，并检查连接是否成功
 	conn, err := net.DialTimeout("ip:icmp", webUrl, time.Duration(timeout)*time.Millisecond)
@@ -113,12 +116,19 @@ func main() {
 			maxTime = et
 		}
 		totalTime += et
-		fmt.Printf("来自 %s 的回复: 字节=%d 时间=%dms TTL=%d\n", webUrl, len(buf[28:n]), et, buf[8])
-		successTimes++
-		if successTimes == 5 {
-			break
+		receivedICMP, err := parseICMP(buf[:n])
+		if err != nil {
+			fmt.Printf("来自 %s 的回复: 数据包格式错误\n", webUrl)
+		} else if receivedICMP.Identifier != icmp.Identifier {
+			fmt.Printf("来自 %s 的回复: Identifier 不匹配\n", webUrl)
+		} else {
+			fmt.Printf("来自 %s 的回复: 字节=%d 时间=%dms TTL=%d\n", webUrl, len(buf[28:n]), et, buf[8])
+			successTimes++
+			if successTimes == 5 {
+				break
+			}
+			time.Sleep(1 * time.Second)
 		}
-		time.Sleep(1 * time.Second)
 	}
 	fmt.Printf("\n%s 的 Ping 统计信息:\n", webUrl)
 	fmt.Printf("    数据包: 已发送 = %d，已接收 = %d，丢失 = %d (%.2f%% 丢失)，\n", successTimes+failTimes, successTimes, failTimes, float64(failTimes*100)/float64(successTimes+failTimes))
@@ -144,4 +154,13 @@ func CheckSum(data []byte) uint16 {
 		sum = (sum & 0xFFFF) + (sum >> 16)
 	}
 	return uint16(^sum)
+}
+
+func parseICMP(data []byte) (*ICMP, error) {
+	icmp := &ICMP{}
+	err := binary.Read(bytes.NewBuffer(data[20:]), binary.BigEndian, icmp)
+	if err != nil {
+		return nil, err
+	}
+	return icmp, nil
 }
