@@ -1,0 +1,16 @@
+syntax ="proto3";
+
+package rpc;
+option go_package="./rpc";
+message Request{
+  float num_A=1;
+  float num_B=2;
+}
+
+message Response{
+  float result=1;
+}
+
+service server{
+  rpc serv(Request) returns (Response);
+}
