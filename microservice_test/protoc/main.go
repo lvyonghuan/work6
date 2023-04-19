@@ -1,8 +1,8 @@
 package main
 
 import (
-	"work6/protoc/api"
-	"work6/protoc/service"
+	"work6/microservice_test/protoc/api"
+	"work6/microservice_test/protoc/service"
 )
 
 func main() {

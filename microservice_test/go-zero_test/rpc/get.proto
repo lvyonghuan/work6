@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package get;
+option go_package="./rpc";
+
+message Request {
+  string name = 1;
+  string price = 2;
+  int32 num = 3;
+}
+
+message Response {
+  string price = 1;
+  int32 num = 2;
+}
+
+service Get {
+  rpc creat(Request) returns(Response);
+  rpc getInfo(Request) returns(Response);
+}

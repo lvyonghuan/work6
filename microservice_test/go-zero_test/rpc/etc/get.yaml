@@ -1,0 +1,10 @@
+Name: get.rpc
+ListenOn: 0.0.0.0:8081
+
+Mysql:
+  Datasource: root:42424242@tcp(127.0.0.1:3306)/store
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: get.rpc

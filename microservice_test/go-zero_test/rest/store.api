@@ -1,0 +1,26 @@
+syntax = "v1"
+
+info (
+	Name: "Name value"
+	Price: "Price value"
+	Num: "Num value"
+)
+
+type request {
+	Name  string `json:"name"`
+	Price string `json:"price"`
+	Num   int    `json:"num"`
+}
+
+type response {
+	Price string `json:"price"`
+	Num   int    `json:"num"`
+}
+
+service store-api {
+	@handler GetUser
+	get /search/:name(request) returns(response)
+	
+	@handler CreateUser
+	post /create(request) returns(response)
+}

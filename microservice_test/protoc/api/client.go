@@ -6,8 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
-	pb "work6/protoc/rpc"
+	"work6/microservice_test/protoc/rpc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -33,15 +32,15 @@ func Plus(c *gin.Context) {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	cli := pb.NewServerClient(con)
-	re, err := cli.Serv(context.Background(), &pb.Request{
+	cli := rpc.NewServerClient(con)
+	re, err := cli.Serv(context.Background(), &rpc.Request{
 		Num_A: a_num_32,
 		Num_B: b_num_32,
 	})
 	if err != nil {
 		log.Println(err.Error())
 	}
-	log.Println("client:", re.Result)
+	log.Println("rpc:", re.Result)
 	c.JSON(http.StatusOK, gin.H{
 		"status": 200,
 		"info":   re.Result,
