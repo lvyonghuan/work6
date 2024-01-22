@@ -1,0 +1,70 @@
+<head>
+    <style>
+        #container{
+            display: grid;
+            grid-template-columns: 100px 100px 100px 100px 100px 100px;
+            grid-template-rows: 100px 400px 100px;
+            grid-auto-flow: row;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%
+        }
+        .img-1{
+            width: 200px;
+            height: 400px;
+        }
+        .img-2{
+            width:400px;
+            height:400px;
+        }
+        .img-3{
+            width: 200px;
+        }
+        .item-1 {
+            width: 200px;
+            height: 400px;
+            grid-column-start:1;
+            grid-column-end:3;
+        }
+        .item-2{
+            width: 400px;
+            height: 400px;
+            grid-column-start:3;
+            grid-column-end:7;
+        }
+        .item-3{
+            width: 200px;
+            height: 100px;
+            grid-column-start:1;
+            grid-column-end:3;
+        }
+        .item-4{
+            width: 200px;
+            height: 100px;
+            grid-column-start:3;
+            grid-column-end:5;
+        }
+        .item-5{
+            width: 200px;
+            height: 100px;
+            grid-column-start:5;
+            grid-column-end:7;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div><img src="./thumbnail.png"></div>
+        <div><img src="./thumbnail.png"></div>
+        <div><img src="./thumbnail.png"></div>
+        <div><img src="./thumbnail.png"></div>
+        <div><img src="./thumbnail.png"></div>
+        <div><img src="./thumbnail.png"></div>
+        <div class="item-1"><img src="./thumbnail.png" class="img-1"></div>
+        <div class="item-2"><img src="./thumbnail.png" class="img-2"></div>
+        <div class="item-3"><img src="./thumbnail.png" class="img-3"></div>
+        <div class="item-4"><img src="./thumbnail.png" class="img-3"></div>
+        <div class="item-5"><img src="./thumbnail.png" class="img-3"></div>
+    </div>
+</body>
